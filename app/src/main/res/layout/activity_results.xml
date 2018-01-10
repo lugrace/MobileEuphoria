@@ -23,12 +23,12 @@
             android:id="@+id/happinessLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/happiness_index" />
 
         <TextView
             android:id="@+id/happinessIndex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="0%" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
