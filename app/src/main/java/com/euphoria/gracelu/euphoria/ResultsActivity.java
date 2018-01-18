@@ -13,9 +13,6 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.services.SearchService;
-import com.twitter.sdk.android.core.services.StatusesService;
-
-import org.w3c.dom.Text;
 
 import retrofit2.Call;
 
@@ -26,38 +23,29 @@ import retrofit2.Call;
 
 public class ResultsActivity extends AppCompatActivity{
 
-    TextView resultsName = (TextView) findViewById(R.id.resultsName);
 
+    String[] tweets = new String[50];
     @Override
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         Twitter.initialize(this);
 
-
+        TextView resultsName = (TextView) findViewById(R.id.resultsName);
         TextView happinessIndex = (TextView) findViewById(R.id.happinessIndex);
         String collegeName = getIntent().getStringExtra("collegeName");
 
         resultsName.setText(collegeName);
         String[] tweets = retrieveTweets(collegeName);
+//        resultsName.setText(tweets[26]);
     }
 
     public String[] retrieveTweets(String collegeName){
-        String[] tweets = new String[100];
-        TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
-//        StatusesService statusesService = twitterApiClient.getStatusesService();
-//        Call<Tweet> call = statusesService.show(524971209851543553L, null, null, null);
-//        call.enqueue(new Callback<Tweet>() {
-//            @Override
-//            public void success(Result<Tweet> result) {
-//                //Do something with result
-//            }
-//
-//            public void failure(TwitterException exception) {
-//                //Do something on failure
-//            }
-//        });
 
+        TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
+        String[] temp = new String[50];
         //testing
         SearchService searchService = twitterApiClient.getSearchService();
         Call<Search> call2 = searchService.tweets("Cornell", null, "en", null, null, 50, null, null, null, null);
@@ -65,13 +53,20 @@ public class ResultsActivity extends AppCompatActivity{
             @Override
             public void success(Result<Search> result) {
                 //do something with result
-                resultsName.setText("GRACE");
+                TextView resultsName = (TextView) findViewById(R.id.resultsName);
+                int i = 0;
+                for(Tweet tweet : result.data.tweets){
+                    tweets[i] = tweet.text;
+                    i++;
+                }
+//                return tweets;
             }
             public void failure(TwitterException exception) {
                 //Do something on failure
             }
         });
-
+        TextView resultsName = (TextView) findViewById(R.id.resultsName);
+        resultsName.setText(tweets[0]);
         return tweets;
     }
 
