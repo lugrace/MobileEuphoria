@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/textView"
@@ -19,23 +20,27 @@
             android:textSize="64sp"
             tools:layout_editor_absoluteX="50dp"
             tools:layout_editor_absoluteY="105dp"
-            android:textIsSelectable="true"/>
+            android:textIsSelectable="true"
+            android:gravity="center_horizontal"
+            android:paddingBottom="20dp"/>
 
         <EditText
             android:id="@+id/userCollege"
-            android:layout_width="match_parent"
+            android:layout_width="282dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
             android:hint="@string/enter_college_name"
+            android:inputType="textPersonName"
             tools:layout_editor_absoluteX="85dp"
-            tools:layout_editor_absoluteY="203dp" />
+            tools:layout_editor_absoluteY="203dp"
+            android:paddingBottom="30dp"/>
 
         <Button
             android:id="@+id/enterButton"
-            android:layout_width="match_parent"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="171dp"
             android:layout_height="wrap_content"
-            android:text="@string/analyze" />
+            android:text="@string/analyze"/>
 
     </LinearLayout>
 
