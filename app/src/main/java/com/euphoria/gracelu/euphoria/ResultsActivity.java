@@ -58,7 +58,7 @@ public class ResultsActivity extends AppCompatActivity{
 
         //testing
         SearchService searchService = twitterApiClient.getSearchService();
-        Call<Search> call2 = searchService.tweets("Cornell", null, "en", null, null, 100, null, null, null, null);
+        Call<Search> call2 = searchService.tweets("Cornell", null, "en", null, null, 50, null, null, null, null);
         call2.enqueue(new Callback<Search>() {
             @Override
             public void success(Result<Search> result) {
