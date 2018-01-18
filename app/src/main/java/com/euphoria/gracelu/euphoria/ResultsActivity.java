@@ -59,18 +59,18 @@ public class ResultsActivity extends AppCompatActivity{
                     tweets[i] = tweet.text;
                     i++;
                 }
-//                return tweets;
+                int happy = findHappinessLevel(tweets);
             }
             public void failure(TwitterException exception) {
                 //Do something on failure
             }
         });
-        TextView resultsName = (TextView) findViewById(R.id.resultsName);
-        resultsName.setText(tweets[0]);
         return tweets;
     }
 
     public int findHappinessLevel(String[] tweets){
+        TextView resultsName = (TextView) findViewById(R.id.resultsName);
+        resultsName.setText(tweets[3]);
         return 0;
     }
 
