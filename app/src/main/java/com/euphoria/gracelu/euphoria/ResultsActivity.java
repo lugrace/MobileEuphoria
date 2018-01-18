@@ -26,8 +26,9 @@ public class ResultsActivity extends AppCompatActivity{
     }
 
     public String[] retrieveTweets(String collegeName){
-//        return ["idk"];
-        return null;
+        String[] tweets = new String[100];
+
+        return tweets;
     }
 
     public int findHappinessLevel(String[] tweets){
