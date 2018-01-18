@@ -5,4 +5,6 @@
     <string name="analyze">Analyze</string>
     <string name="no_name">No Name</string>
     <string name="happiness_index">Happiness Index</string>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">7o5ytIQUrGqaM0lQpIirXVE3Z</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">sJwPmziAF4NT1XX7ak3YZac1UpzxNFUDBktapW63F2BhMeZ3EM</string>
 </resources>
