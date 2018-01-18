@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.twitter.sdk.android.core.Twitter;
+
 import org.w3c.dom.Text;
 
 /**
@@ -17,6 +19,7 @@ public class ResultsActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+        Twitter.initialize(this);
 
         TextView resultsName = (TextView) findViewById(R.id.resultsName);
         TextView happinessIndex = (TextView) findViewById(R.id.happinessIndex);

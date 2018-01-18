@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.twitter.sdk.android.core.Twitter;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText userInput;
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Twitter.initialize(this);
 
         userInput = (EditText)findViewById(R.id.userCollege);
         Button btn = (Button) findViewById(R.id.enterButton);
