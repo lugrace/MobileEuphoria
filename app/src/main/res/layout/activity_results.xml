@@ -10,25 +10,29 @@
         android:layout_height="495dp"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteY="8dp"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/resultsName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="@string/no_name" />
+            android:text="@string/no_name"
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/happinessLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/happiness_index" />
+            android:text="@string/happiness_index"
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/happinessIndex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0%" />
+            android:text="@string/calculating"
+            android:gravity="center"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
