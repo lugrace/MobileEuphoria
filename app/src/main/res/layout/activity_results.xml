@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:text="@string/no_name"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:paddingBottom="20dp"/>
 
         <TextView
             android:id="@+id/happinessLabel"

@@ -1,17 +1,18 @@
 package com.euphoria.gracelu.euphoria;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mopub.common.util.Utils;
+import com.microsoft.cognitive.textanalytics.model.request.RequestDoc;
+import com.microsoft.cognitive.textanalytics.model.request.RequestDocIncludeLanguage;
+import com.microsoft.cognitive.textanalytics.model.request.keyphrases_sentiment.TextRequest;
+import com.microsoft.cognitive.textanalytics.model.request.language.LanguageRequest;
+import com.microsoft.cognitive.textanalytics.retrofit.ServiceCall;
+import com.microsoft.cognitive.textanalytics.retrofit.ServiceCallback;
+import com.microsoft.cognitive.textanalytics.retrofit.ServiceRequestClient;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
@@ -22,51 +23,20 @@ import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.services.SearchService;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.ProtocolException;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import cz.msebera.android.httpclient.HttpEntity;
-import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.client.HttpClient;
-import cz.msebera.android.httpclient.client.methods.HttpPost;
-import cz.msebera.android.httpclient.client.utils.URIBuilder;
-import cz.msebera.android.httpclient.entity.StringEntity;
-import cz.msebera.android.httpclient.impl.client.HttpClients;
-import cz.msebera.android.httpclient.util.EntityUtils;
-import retrofit2.Call;
-import retrofit2.Response;
-
-
-import com.microsoft.cognitive.textanalytics.model.request.RequestDoc;
-import com.microsoft.cognitive.textanalytics.model.request.keyphrases_sentiment.TextRequest;
-import com.microsoft.cognitive.textanalytics.model.request.RequestDocIncludeLanguage;
-import com.microsoft.cognitive.textanalytics.model.request.language.LanguageRequest;
-import com.microsoft.cognitive.textanalytics.model.response.keyphrases.KeyPhrasesResponse;
-import com.microsoft.cognitive.textanalytics.model.response.language.LanguageResponse;
-import com.microsoft.cognitive.textanalytics.model.response.sentiment.SentimentResponse;
-import com.microsoft.cognitive.textanalytics.retrofit.ServiceCall;
-import com.microsoft.cognitive.textanalytics.retrofit.ServiceCallback;
-import com.microsoft.cognitive.textanalytics.retrofit.ServiceRequestClient;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.net.ssl.HttpsURLConnection;
+
+import retrofit2.Call;
 
 
 /**
