@@ -64,6 +64,28 @@
                 android:text="@string/positive_tweets"
                 android:gravity="center"/>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/negativeP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/calculating"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/positiveP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/calculating"
+                android:gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

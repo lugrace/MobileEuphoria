@@ -131,6 +131,8 @@ public class ResultsActivity extends AppCompatActivity{
     private int calculateHappiness(String response) throws JSONException {
         final TextView resultsName = (TextView) findViewById(R.id.resultsName);
         double overallTotal = 0.0;
+        double positiveNum = 0.0;
+        double negativeNum = 0.0;
         double[] allPercents = new double[50];
         int actualPercent = 0;
         JSONObject everything = new JSONObject(response);
@@ -140,9 +142,25 @@ public class ResultsActivity extends AppCompatActivity{
             JSONObject temp = docs.getJSONObject(i);
             allPercents[i] = Double.parseDouble(temp.getString("score"));
             overallTotal += allPercents[i];
+            if(allPercents[i]<0.1){
+                negativeNum += 1;
+            }else if(allPercents[i] > 0.8){
+                positiveNum += 1;
+            }
         }
         double avTotal = overallTotal/numDocs;
         actualPercent = (int)(avTotal*100);
+
+        double avPositive = positiveNum/numDocs;
+        int actualPositive = (int)(avPositive*100);
+        final TextView positiveP = (TextView) findViewById(R.id.positiveP);
+
+        double avNegative = negativeNum/numDocs;
+        int actualNegative = (int)(avNegative*100);
+        final TextView negativeP = (TextView) findViewById(R.id.negativeP);
+
+        positiveP.setText(actualPositive+"%");
+        negativeP.setText(actualNegative+"%");
 
         return actualPercent;
     }
