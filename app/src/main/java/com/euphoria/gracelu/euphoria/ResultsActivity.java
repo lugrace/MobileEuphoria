@@ -81,6 +81,7 @@ public class ResultsActivity extends AppCompatActivity{
 
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
         String[] temp = new String[50];
+        //testing
         SearchService searchService = twitterApiClient.getSearchService();
         Call<Search> call2 = searchService.tweets(collegeName, null, "en", null, null, 50, null, null, null, null);
         call2.enqueue(new Callback<Search>() {
@@ -101,6 +102,8 @@ public class ResultsActivity extends AppCompatActivity{
             }
             public void failure(TwitterException exception) {
                 //Do something on failure
+                TextView resultsName = (TextView) findViewById(R.id.resultsName);
+                resultsName.setText(exception.getMessage());
             }
         });
         return tweets;
@@ -116,7 +119,6 @@ public class ResultsActivity extends AppCompatActivity{
 
             String response = GetSentiment (documents);
             int actualPercent = calculateHappiness(response);
-//            resultsName.setText(actualPercent+"");
             TextView happinessIndex = (TextView) findViewById(R.id.happinessIndex);
             happinessIndex.setText(actualPercent+"%");
         }
