@@ -111,9 +111,8 @@ public class ResultsActivity extends AppCompatActivity{
 
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
         String[] temp = new String[50];
-        //testing
         SearchService searchService = twitterApiClient.getSearchService();
-        Call<Search> call2 = searchService.tweets("Cornell", null, "en", null, null, 50, null, null, null, null);
+        Call<Search> call2 = searchService.tweets(collegeName, null, "en", null, null, 50, null, null, null, null);
         call2.enqueue(new Callback<Search>() {
             @Override
             public void success(Result<Search> result) {
@@ -146,10 +145,10 @@ public class ResultsActivity extends AppCompatActivity{
             }
 
             String response = GetSentiment (documents);
-//            response = pretty(response);
-//            resultsName.setText(response);
             int actualPercent = calculateHappiness(response);
-            resultsName.setText(actualPercent+"");
+//            resultsName.setText(actualPercent+"");
+            TextView happinessIndex = (TextView) findViewById(R.id.happinessIndex);
+            happinessIndex.setText(actualPercent+"%");
         }
         catch (Exception e) {
             resultsName.setText("Microsoft, we have a problem.");
@@ -171,7 +170,6 @@ public class ResultsActivity extends AppCompatActivity{
             overallTotal += allPercents[i];
         }
         double avTotal = overallTotal/numDocs;
-//        resultsName.setText(avTotal);
         actualPercent = (int)(avTotal*100);
 
         return actualPercent;
@@ -229,15 +227,6 @@ public class ResultsActivity extends AppCompatActivity{
             this.documents.add (new Document (id, language, text));
         }
     }
-
-    public static String pretty(String json_text) {
-        JsonParser parser = new JsonParser();
-        JsonObject json = parser.parse(json_text).getAsJsonObject();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(json);
-    }
-
-
 
 
 }
