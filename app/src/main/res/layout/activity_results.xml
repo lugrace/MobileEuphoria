@@ -39,7 +39,31 @@
             android:layout_height="wrap_content"
             android:text="@string/calculating"
             android:gravity="center"
-            android:textSize="32sp"/>
+            android:textSize="32sp"
+            android:paddingBottom="30dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/negative_tweets"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/positive_tweets"
+                android:gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
