@@ -3,11 +3,13 @@ package com.euphoria.gracelu.euphoria;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mopub.common.util.Utils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
@@ -18,8 +20,13 @@ import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.services.SearchService;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -30,6 +37,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.HttpClients;
 import cz.msebera.android.httpclient.util.EntityUtils;
 import retrofit2.Call;
+import retrofit2.Response;
 
 
 import com.microsoft.cognitive.textanalytics.model.request.RequestDoc;
@@ -43,6 +51,14 @@ import com.microsoft.cognitive.textanalytics.retrofit.ServiceCall;
 import com.microsoft.cognitive.textanalytics.retrofit.ServiceCallback;
 import com.microsoft.cognitive.textanalytics.retrofit.ServiceRequestClient;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import javax.net.ssl.HttpsURLConnection;
+
+
 /**
  * Created by gracelu on 1/10/18.
  */
@@ -52,8 +68,21 @@ public class ResultsActivity extends AppCompatActivity{
 
 
     String[] tweets = new String[50];
-    @Override
+    private ServiceCall mSentimentCall;
+    private ServiceCallback mSentimentCallback;
+    private ServiceRequestClient mRequest;
+    private RequestDoc mDocument;
+    private LanguageRequest mLanguageRequest;       // request for language detection
+    private RequestDocIncludeLanguage mDocIncludeLanguage;
+    private TextRequest mTextIncludeLanguageRequest;
+    private String mSubscriptionKey;
+    private String URLHost = "https://westcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment";
+    static String accessKey = "67e66e4df8154d1d80c7f4816eff3cae";
+    static String host = "https://westcentralus.api.cognitive.microsoft.com";
 
+    static String path = "/text/analytics/v2.0/sentiment";
+
+    @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,109 +129,68 @@ public class ResultsActivity extends AppCompatActivity{
 
     public int findHappinessLevel(String[] tweets) throws Exception {
         final TextView resultsName = (TextView) findViewById(R.id.resultsName);
-//        AsyncHttpClient client = new AsyncHttpClient();
-//        String endpoint = "https://westcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment";
-//        String accessKey = "90fa1d8c5db046429b4db9b51ba39f56";
-//        client.setBasicAuth("Ocp-Apim-Subscription-Key",accessKey);
-//        client.get(endpoint, new JsonHttpResponseHandler() {
-//
-//            @Override
-//            public void onStart() {
-//                // called before request is started
-//                resultsName.setText("start");
-//            }
-//
-////            @Override
-////            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-////                // called when response HTTP status is "200 OK"
-////                resultsName.setText("grace!");
-////            }
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                // If the response is JSONObject instead of expected JSONArray
-//                resultsName.setText("grace!");
-//            }
-//
-////            @Override
-////            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
-////                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-////                resultsName.setText("rip!");
-////            }
-//
-//            @Override
-//            public void onRetry(int retryNo) {
-//                // called when request is retried
-//                resultsName.setText("retry!");
-//            }
-//        });
-        resultsName.setText("GRACE");
-        String response = GetSentiment("lol");
-        resultsName.setText(prettify (response));
+        try {
+            Documents documents = new Documents ();
+            documents.add ("1", "en", "I really enjoy the new XBox One S. It has a clean look, it has 4K/HDR resolution and it is affordable.");
+            documents.add ("2", "es", "Este ha sido un dia terrible, llegué tarde al trabajo debido a un accidente automobilistico.");
+
+            String response = GetSentiment (documents);
+            resultsName.setText(prettify (response));
+        }
+        catch (Exception e) {
+            resultsName.setText(e.toString());
+        }
         return 0;
     }
 
-    public String GetSentiment(String tweetText) throws Exception {
-//        String text = new Gson().toJson(tweetText);
-//        byte[] encoded_text = text.getBytes("UTF-8");
-        String accessKey = "90fa1d8c5db046429b4db9b51ba39f56";
-//
-        URL url = new URL("https://westcentralus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment");
-//        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-//        connection.setRequestMethod("POST");
-//        connection.setRequestProperty("Content-Type", "text/json");
-//        connection.setRequestProperty("Ocp-Apim-Subscription-Key", accessKey);
-//        connection.setDoOutput(true);
-//
-//        DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-//        wr.write(encoded_text, 0, encoded_text.length);
-//        wr.flush();
-//        wr.close();
-//
-//        StringBuilder response = new StringBuilder ();
-//        BufferedReader in = new BufferedReader(
-//                new InputStreamReader(connection.getInputStream()));
-//        String line;
-//        while ((line = in.readLine()) != null) {
-//            response.append(line);
-//        }
-//        in.close();
-//
-//        return response.toString();
-        final TextView resultsName = (TextView) findViewById(R.id.resultsName);
+    public static String GetSentiment (Documents documents) throws Exception {
+        String text = new Gson().toJson(documents);
+        byte[] encoded_text = text.getBytes("UTF-8");
 
-        HttpClient httpclient = HttpClients.createDefault();
+        URL url = new URL(host+path);
+        HttpsURLConnection connection;
+        connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "text/json");
+        connection.setRequestProperty("Ocp-Apim-Subscription-Key", accessKey);
+        connection.setDoOutput(true);
 
-        try
-        {
-            URIBuilder builder = new URIBuilder("https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment");
+        DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+        wr.write(encoded_text, 0, encoded_text.length);
+        wr.flush();
+        wr.close();
 
-
-            URI uri = builder.build();
-            HttpPost request = new HttpPost(uri);
-            request.setHeader("Content-Type", "application/json");
-            request.setHeader("Ocp-Apim-Subscription-Key", accessKey);
-
-
-            // Request body
-            StringEntity reqEntity = new StringEntity("{body}");
-            request.setEntity(reqEntity);
-
-            HttpResponse response = httpclient.execute(request);
-            HttpEntity entity = response.getEntity();
-
-            if (entity != null)
-            {
-                System.out.println(EntityUtils.toString(entity));
-                resultsName.setText(EntityUtils.toString(entity));
-            }
-            resultsName.setText("oops");
+        StringBuilder response = new StringBuilder ();
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(connection.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+            response.append(line);
         }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-            resultsName.setText("EXTRA OOPS");
+        in.close();
+
+        return response.toString();
+    }
+
+    class Document {
+        public String id, language, text;
+
+        public Document(String id, String language, String text){
+            this.id = id;
+            this.language = language;
+            this.text = text;
         }
-        return "gracegrace";
+    }
+
+    class Documents {
+        public List<Document> documents;
+
+        public Documents() {
+            this.documents = new ArrayList<Document>();
+        }
+        public void add(String id, String language, String text) {
+            this.documents.add (new Document (id, language, text));
+        }
     }
 
     public static String prettify(String json_text) {
@@ -211,5 +199,6 @@ public class ResultsActivity extends AppCompatActivity{
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(json);
     }
+
 
 }
