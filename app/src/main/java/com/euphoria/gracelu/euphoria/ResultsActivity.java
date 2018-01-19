@@ -123,7 +123,7 @@ public class ResultsActivity extends AppCompatActivity{
             happinessIndex.setText(actualPercent+"%");
         }
         catch (Exception e) {
-            resultsName.setText("Microsoft, we have a problem.");
+            resultsName.setText(R.string.problem);
         }
         return 0;
     }

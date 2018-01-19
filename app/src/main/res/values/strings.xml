@@ -11,5 +11,6 @@
     <string name="calculating">Calculating...</string>
     <string name="positive_tweets">Positive Tweets</string>
     <string name="negative_tweets">Negative Tweets</string>
+    <string name="problem">Microsoft, we have a problem.</string>
 
 </resources>
