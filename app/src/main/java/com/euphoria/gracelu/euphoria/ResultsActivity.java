@@ -1,6 +1,8 @@
 package com.euphoria.gracelu.euphoria;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +24,10 @@ import com.twitter.sdk.android.core.services.SearchService;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.ProtocolException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -131,11 +136,12 @@ public class ResultsActivity extends AppCompatActivity{
         final TextView resultsName = (TextView) findViewById(R.id.resultsName);
         try {
             Documents documents = new Documents ();
-            documents.add ("1", "en", "I really enjoy the new XBox One S. It has a clean look, it has 4K/HDR resolution and it is affordable.");
-            documents.add ("2", "es", "Este ha sido un dia terrible, llegué tarde al trabajo debido a un accidente automobilistico.");
+            for(int i = 1; i < tweets.length; i++){
+                documents.add(""+i, "en", tweets[i]);
+            }
 
             String response = GetSentiment (documents);
-            resultsName.setText(prettify (response));
+            resultsName.setText(pretty (response));
         }
         catch (Exception e) {
             resultsName.setText(e.toString());
@@ -144,6 +150,8 @@ public class ResultsActivity extends AppCompatActivity{
     }
 
     public static String GetSentiment (Documents documents) throws Exception {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         String text = new Gson().toJson(documents);
         byte[] encoded_text = text.getBytes("UTF-8");
 
@@ -193,12 +201,14 @@ public class ResultsActivity extends AppCompatActivity{
         }
     }
 
-    public static String prettify(String json_text) {
+    public static String pretty(String json_text) {
         JsonParser parser = new JsonParser();
         JsonObject json = parser.parse(json_text).getAsJsonObject();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(json);
     }
+
+
 
 
 }
