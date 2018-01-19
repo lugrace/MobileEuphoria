@@ -32,6 +32,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -60,6 +61,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -141,13 +146,37 @@ public class ResultsActivity extends AppCompatActivity{
             }
 
             String response = GetSentiment (documents);
-            resultsName.setText(pretty (response));
+//            response = pretty(response);
+//            resultsName.setText(response);
+            int actualPercent = calculateHappiness(response);
+            resultsName.setText(actualPercent+"");
         }
         catch (Exception e) {
-            resultsName.setText(e.toString());
+            resultsName.setText("Microsoft, we have a problem.");
         }
         return 0;
     }
+
+    private int calculateHappiness(String response) throws JSONException {
+        final TextView resultsName = (TextView) findViewById(R.id.resultsName);
+        double overallTotal = 0.0;
+        double[] allPercents = new double[50];
+        int actualPercent = 0;
+        JSONObject everything = new JSONObject(response);
+        JSONArray docs = everything.getJSONArray("documents");
+        int numDocs = docs.length();
+        for(int i = 0; i < numDocs; i++){
+            JSONObject temp = docs.getJSONObject(i);
+            allPercents[i] = Double.parseDouble(temp.getString("score"));
+            overallTotal += allPercents[i];
+        }
+        double avTotal = overallTotal/numDocs;
+//        resultsName.setText(avTotal);
+        actualPercent = (int)(avTotal*100);
+
+        return actualPercent;
+    }
+
 
     public static String GetSentiment (Documents documents) throws Exception {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
