@@ -30,4 +30,8 @@ dependencies {
     compile 'com.twitter.sdk.android:twitter:3.1.1'
     // (Optional) Monetize using mopub
     compile 'com.twitter.sdk.android:twitter-mopub:3.1.1'
+//    compile 'org.apache.httpcomponents:httpcore:4.4.1'
+//    compile 'org.apache.httpcomponents:httpclient:4.5'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile project(path: ':ClientLibrary')
 }

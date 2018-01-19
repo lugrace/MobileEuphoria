@@ -7,4 +7,6 @@
     <string name="happiness_index">Happiness Index</string>
     <string name="com.twitter.sdk.android.CONSUMER_KEY">7o5ytIQUrGqaM0lQpIirXVE3Z</string>
     <string name="com.twitter.sdk.android.CONSUMER_SECRET">sJwPmziAF4NT1XX7ak3YZac1UpzxNFUDBktapW63F2BhMeZ3EM</string>
+    <string name="subscription_key">90fa1d8c5db046429b4db9b51ba39f56</string>
+
 </resources>
