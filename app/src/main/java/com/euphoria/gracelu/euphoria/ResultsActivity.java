@@ -118,7 +118,7 @@ public class ResultsActivity extends AppCompatActivity{
             }
 
             String response = GetSentiment (documents);
-            int actualPercent = calculateHappiness(response);
+            int actualPercent = calculateHappiness(tweets, response);
             TextView happinessIndex = (TextView) findViewById(R.id.happinessIndex);
             happinessIndex.setText(actualPercent+"%");
         }
@@ -128,12 +128,14 @@ public class ResultsActivity extends AppCompatActivity{
         return 0;
     }
 
-    private int calculateHappiness(String response) throws JSONException {
+    private int calculateHappiness(String[] tweets, String response) throws JSONException {
         final TextView resultsName = (TextView) findViewById(R.id.resultsName);
         double overallTotal = 0.0;
         double positiveNum = 0.0;
         double negativeNum = 0.0;
         double[] allPercents = new double[50];
+        String exNeg = "";
+        String exPos = "";
         int actualPercent = 0;
         JSONObject everything = new JSONObject(response);
         JSONArray docs = everything.getJSONArray("documents");
@@ -144,8 +146,10 @@ public class ResultsActivity extends AppCompatActivity{
             overallTotal += allPercents[i];
             if(allPercents[i]<0.1){
                 negativeNum += 1;
+                exNeg = tweets[i];
             }else if(allPercents[i] > 0.8){
                 positiveNum += 1;
+                exPos = tweets[i];
             }
         }
         double avTotal = overallTotal/numDocs;
@@ -161,6 +165,11 @@ public class ResultsActivity extends AppCompatActivity{
 
         positiveP.setText(actualPositive+"%");
         negativeP.setText(actualNegative+"%");
+
+        final TextView negativeEx = (TextView) findViewById(R.id.negativeEx);
+        final TextView positiveEx = (TextView) findViewById(R.id.positiveEx);
+        negativeEx.setText(exNeg);
+        positiveEx.setText(exPos);
 
         return actualPercent;
     }

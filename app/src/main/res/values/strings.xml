@@ -12,5 +12,6 @@
     <string name="positive_tweets">Positive Tweets</string>
     <string name="negative_tweets">Negative Tweets</string>
     <string name="problem">Microsoft, we have a problem.</string>
+    <string name="loading">loading...</string>
 
 </resources>
