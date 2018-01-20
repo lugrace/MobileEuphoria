@@ -47,7 +47,7 @@ import retrofit2.Call;
 public class ResultsActivity extends AppCompatActivity{
 
 
-    String[] tweets = new String[50];
+    String[] tweets = new String[100];
     private ServiceCall mSentimentCall;
     private ServiceCallback mSentimentCallback;
     private ServiceRequestClient mRequest;
@@ -80,10 +80,10 @@ public class ResultsActivity extends AppCompatActivity{
     public String[] retrieveTweets(String collegeName){
 
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
-        String[] temp = new String[50];
+        String[] temp = new String[100];
         //testing
         SearchService searchService = twitterApiClient.getSearchService();
-        Call<Search> call2 = searchService.tweets(collegeName, null, "en", null, null, 50, null, null, null, null);
+        Call<Search> call2 = searchService.tweets(collegeName, null, "en", null, null, 100, null, null, null, null);
         call2.enqueue(new Callback<Search>() {
             @Override
             public void success(Result<Search> result) {
@@ -133,7 +133,7 @@ public class ResultsActivity extends AppCompatActivity{
         double overallTotal = 0.0;
         double positiveNum = 0.0;
         double negativeNum = 0.0;
-        double[] allPercents = new double[50];
+        double[] allPercents = new double[100];
         String exNeg = "";
         String exPos = "";
         int actualPercent = 0;
@@ -144,12 +144,14 @@ public class ResultsActivity extends AppCompatActivity{
             JSONObject temp = docs.getJSONObject(i);
             allPercents[i] = Double.parseDouble(temp.getString("score"));
             overallTotal += allPercents[i];
-            if(allPercents[i]<0.1){
+            if(allPercents[i]<0.2){
                 negativeNum += 1;
-                exNeg = tweets[i];
+                if(!tweets[i].contains("RT") & !tweets[i].contains("http"))
+                    exNeg = tweets[i];
             }else if(allPercents[i] > 0.8){
                 positiveNum += 1;
-                exPos = tweets[i];
+                if(!tweets[i].contains("RT") & !tweets[i].contains("http"))
+                    exPos = tweets[i];
             }
         }
         double avTotal = overallTotal/numDocs;
