@@ -38,6 +38,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 import retrofit2.Call;
 
+import static java.lang.String.format;
+
 
 /**
  * Created by gracelu on 1/10/18.
@@ -81,7 +83,6 @@ public class ResultsActivity extends AppCompatActivity{
 
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
         String[] temp = new String[100];
-        //testing
         SearchService searchService = twitterApiClient.getSearchService();
         Call<Search> call2 = searchService.tweets(collegeName, null, "en", null, null, 100, null, null, null, null);
         call2.enqueue(new Callback<Search>() {
@@ -120,7 +121,7 @@ public class ResultsActivity extends AppCompatActivity{
             String response = GetSentiment (documents);
             int actualPercent = calculateHappiness(tweets, response);
             TextView happinessIndex = (TextView) findViewById(R.id.happinessIndex);
-            happinessIndex.setText(actualPercent+"%");
+            happinessIndex.setText(format(getString(R.string.percent2), actualPercent));
         }
         catch (Exception e) {
             resultsName.setText(R.string.problem);
@@ -165,8 +166,8 @@ public class ResultsActivity extends AppCompatActivity{
         int actualNegative = (int)(avNegative*100);
         final TextView negativeP = (TextView) findViewById(R.id.negativeP);
 
-        positiveP.setText(actualPositive+"%");
-        negativeP.setText(actualNegative+"%");
+        positiveP.setText(format(getString(R.string.percent2), actualPositive));
+        negativeP.setText(format(getString(R.string.percent2), actualNegative));
 
         final TextView negativeEx = (TextView) findViewById(R.id.negativeEx);
         final TextView positiveEx = (TextView) findViewById(R.id.positiveEx);

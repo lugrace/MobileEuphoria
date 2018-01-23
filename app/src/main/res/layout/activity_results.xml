@@ -14,7 +14,8 @@
         android:orientation="vertical"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/resultsName"
